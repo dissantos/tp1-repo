@@ -1,0 +1,55 @@
+# depslib dependency file v1.0
+1553043919 source:/home/diego/Documentos/Pescaria/carregar_imagem.c
+	<SOIL/SOIL.h>
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	"carregar_imagem.h"
+
+1553042182 /home/diego/Documentos/Pescaria/carregar_imagem.h
+	<GL/glew.h>
+	<GL/freeglut.h>
+
+1553177891 source:/home/diego/Documentos/Pescaria/main.c
+	<SOIL/SOIL.h>
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<stdlib.h>
+	<stdio.h>
+	"carregar_imagem.h"
+	"personagem.h"
+	<time.h>
+
+1553042703 /home/diego/Documentos/Pescaria/personagem.h
+	"vetor.h"
+
+1553043056 /home/diego/Documentos/Pescaria/vetor.h
+
+1553648014 source:/home/diego/Documentos/VersoesTp1/versao 0.2/Pescaria/main.c
+	<SOIL/SOIL.h>
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<stdlib.h>
+	<stdio.h>
+	"sistema.h"
+	"personagem.h"
+	<time.h>
+
+1553648153 /home/diego/Documentos/VersoesTp1/versao 0.2/Pescaria/sistema.h
+
+1553622002 /home/diego/Documentos/VersoesTp1/versao 0.2/Pescaria/personagem.h
+	"vetor.h"
+
+1553622000 /home/diego/Documentos/VersoesTp1/versao 0.2/Pescaria/vetor.h
+
+1553648199 source:/home/diego/Documentos/VersoesTp1/versao 0.2/Pescaria/sistema.c
+	<SOIL/SOIL.h>
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	"sistema.h"
+
