@@ -53,3 +53,47 @@
 	<string.h>
 	"sistema.h"
 
+1554063898 source:/home/diego/Documentos/TP1/PescariaRepo/sistema.c
+	<SOIL/SOIL.h>
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	"personagem.h"
+	"sistema.h"
+
+1554063881 /home/diego/Documentos/TP1/PescariaRepo/sistema.h
+	<SOIL/SOIL.h>
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	"personagem.h"
+
+1554063654 source:/home/diego/Documentos/TP1/PescariaRepo/main.c
+	"sistema.h"
+	"personagem.h"
+	"tela.h"
+	"menu.h"
+	<time.h>
+
+1553865410 /home/diego/Documentos/TP1/PescariaRepo/personagem.h
+	"vetor.h"
+
+1553622000 /home/diego/Documentos/TP1/PescariaRepo/vetor.h
+
+1553866379 /home/diego/Documentos/TP1/PescariaRepo/tela.h
+
+1554063673 source:/home/diego/Documentos/TP1/PescariaRepo/menu.c
+	"menu.h"
+	"sistema.h"
+
+1553865465 /home/diego/Documentos/TP1/PescariaRepo/menu.h
+	"sistema.h"
+	"tela.h"
+
+1553866379 source:/home/diego/Documentos/TP1/PescariaRepo/tela.c
+	"tela.h"
+

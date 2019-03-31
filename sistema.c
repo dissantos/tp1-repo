@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "personagem.h"
 #include "sistema.h"
 
 GLuint carregaTextura(const char* arquivo)
@@ -31,4 +32,28 @@ void escreveTexto(void * font, char *s, float x, float y, float z)
     for (i = 0; i < strlen(s); i++) {
         glutBitmapCharacter(font, s[i]);
     }
+}
+
+void desenhaObjeto(OBJETO objAtual,const char* arquivo){
+
+    GLuint idTextura = carregaTextura(arquivo);
+    glColor3f(1,1,1);
+
+    glEnable(GL_TEXTURE_2D);
+
+    glBindTexture(GL_TEXTURE_2D, idTextura);
+
+    glBegin(GL_TRIANGLE_FAN);
+        glTexCoord2f(0,0);
+        glVertex3f(objAtual.posicao.x + objAtual.velocidade.x, objAtual.posicao.y + objAtual.velocidade.y,0);
+        glTexCoord2f(1,0);
+        glVertex3f(objAtual.posicao.x + objAtual.largura + objAtual.velocidade.x, objAtual.posicao.y + objAtual.velocidade.y,0);
+        glTexCoord2f(1,1);
+        glVertex3f(objAtual.posicao.x + objAtual.largura + objAtual.velocidade.x, objAtual.posicao.y + objAtual.altura + objAtual.velocidade.y,0);
+        glTexCoord2f(0,1);
+        glVertex3f(objAtual.posicao.x + objAtual.velocidade.x, objAtual.posicao.y + objAtual.altura + objAtual.velocidade.y,0);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+
+
 }

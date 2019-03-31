@@ -5,6 +5,8 @@
 typedef struct{
     VETOR posicao;
     VETOR velocidade;
+    double largura;
+    double altura;
 }OBJETO;
 
 

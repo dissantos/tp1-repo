@@ -31,16 +31,19 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Makefile/menu.h" />
+		<Unit filename="Makefile/personagem.h" />
+		<Unit filename="Makefile/sistema.h" />
+		<Unit filename="Makefile/tela.h" />
+		<Unit filename="Makefile/vetor.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="personagem.h" />
-		<Unit filename="sistema.c">
+		<Unit filename="menu.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="sistema.h" />
-		<Unit filename="vetor.h">
-			<Option target="&lt;{~None~}&gt;" />
+		<Unit filename="sistema.c">
+			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
 			<code_completion />
