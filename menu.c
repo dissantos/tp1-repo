@@ -15,13 +15,13 @@ void iniciaMenu(int x,int y){
 
     OBJETO tela;
 
-    tela.posicao.x = 0;
-    tela.posicao.y = 0;
+    tela.posicao.x = 0+1;
+    tela.posicao.y = 0+1;
     tela.velocidade.x = 0;
     tela.velocidade.y = 0;
-    tela.altura = mundoY;
-    tela.largura = mundoX;
-    
+    tela.altura = mundoY-1;
+    tela.largura = mundoX-1;
+
     OBJETO objAtual = tela;
 
 
@@ -38,7 +38,18 @@ void iniciaMenu(int x,int y){
     //glColor3f(0,1,0);
     desenhaObjeto(botaoJogar,"play.png");
 
+}
 
+int identificarBotao(int x,int y){
+    mouseX = x;
+    mouseY = y;
+
+    printf("%d %d\n",x,y);
+
+    if(x >= botaoJogar.posicao.x && x <= botaoJogar.posicao.x + botaoJogar.largura && y >= botaoJogar.posicao.y && y <= botaoJogar.posicao.y + botaoJogar.altura )
+    	return 1;
+
+    return 0;
 }
 
 

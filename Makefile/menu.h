@@ -4,7 +4,7 @@
 #define MENU_H_INCLUDED
 
 void iniciaMenu(int mouseX,int mouseY);
-void verificaBotao();
+int identificarBotao(int x, int y);
 
 
 #endif // MENU_H_INCLUDED
