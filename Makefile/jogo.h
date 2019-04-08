@@ -15,6 +15,7 @@ void iniciaPrimeiraFase();
 void desenharPause();
 void desenharESC();
 void desenharReinicio();
+void testeColisaoMosca(OBJETO ob1, OBJETO ob2);
 void movimentarLingua(unsigned char key);
 
 

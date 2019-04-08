@@ -168,6 +168,8 @@ void atualiza()
    		//glutSwapBuffers();
    		break;
    	case TELA_JOGO_1:
+		for(int i = 0; i < qtdDeMoscas; i++)
+			testeColisaoMosca(pontaLingua,moscas[i]);
    		//iniciaPrimeiraFase();
    		break;
    		//exit(0);
