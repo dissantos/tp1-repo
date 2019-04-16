@@ -17,6 +17,7 @@
 double mundoX;
 double mundoY;
 int tela;
+int faseAtual;
 
 
 #endif // TELA_H_INCLUDED

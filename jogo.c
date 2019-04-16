@@ -46,6 +46,15 @@ void desenharMoscas(){
 		desenhaObjeto(moscas[i],"mosca1.png");
 }
 
+void desenharScore(){
+	glColor3f(1,1,1);
+	escreveTexto(  GLUT_BITMAP_9_BY_15 , "SCORE:" , 300,750,0);
+	char pontuacao[5];
+	sprintf(pontuacao,"%d",score);
+	
+	escreveTexto( GLUT_BITMAP_9_BY_15 , pontuacao, 370,750,0 );
+}
+
 void iniciaPrimeiraFase(){
     mundoX = 400;
     mundoY = 800;
@@ -54,6 +63,7 @@ void iniciaPrimeiraFase(){
     desenharFundo();
     desenharLingua();
     desenharMoscas();
+    desenharScore();
 }
 
 void desenharESC(){
@@ -101,21 +111,14 @@ void desenharReinicio(){
 }
 
 void testeColisaoMosca(OBJETO ob1, OBJETO ob2){
-	double centroX_ob1,centroY_ob1,centroX_ob2,centroY_ob2;
-	centroX_ob1 = ob1.posicao.x + ob1.largura/2;
-	centroY_ob1 = ob1.posicao.y + ob1.altura/2;
 
-	centroX_ob2 = ob2.posicao.x + ob2.largura/2;
-	centroY_ob2 = ob2.posicao.y + ob2.altura/2;
+	double distancia = sqrt((ob1.posicao.x+ob1.velocidade.x - ob2.posicao.x+ob2.velocidade.x)*(ob1.posicao.x+ob1.velocidade.x - ob2.posicao.x+ob2.velocidade.x) + (ob1.posicao.y+ob1.velocidade.y - ob2.posicao.y+ob2.velocidade.y)*(ob1.posicao.y+ob1.velocidade.y - ob2.posicao.y+ob2.velocidade.y));
+	double raio1 = sqrt(pow((ob1.largura/2),2) + pow((ob1.altura/2),2));
+	double raio2 = sqrt(pow((ob2.largura/2),2) + pow((ob2.altura/2),2));
 
-	double distancia = sqrt(pow((centroX_ob1 - centroX_ob2),2)+pow((centroY_ob1 - centroY_ob2),2));
-	double raio1 = sqrt(pow((centroX_ob1 + ob1.largura),2) + pow((centroY_ob1 + ob1.altura),2));
-	double raio2 = sqrt(pow((centroX_ob2 + ob2.largura),2) + pow((centroY_ob2 + ob2.altura),2));
-
-	printf("distancia = %lf\n",distancia);
-	printf("raio = %lf\n",raio1 +raio2);
 
 	if(distancia <= (raio1 + raio2) ){
+		printf("pegou\n");
 		ob2.largura = 0;
 		ob2.altura = 0;
 	}
@@ -125,11 +128,11 @@ void testeColisaoMosca(OBJETO ob1, OBJETO ob2){
 void movimentarLingua(char unsigned key){
 	switch(key){
 		case 'w':
-			lingua.altura += 2;
+			lingua.altura += 4;
 			pontaLingua.velocidade.y += 2;
 			break;
 		case 's':
-			lingua.altura -= 2;
+			lingua.altura -= 4;
 			pontaLingua.velocidade.y -= 2;
 			break;
 		case 'a':

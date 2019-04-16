@@ -7,10 +7,12 @@ OBJETO lingua;
 OBJETO pontaLingua;
 OBJETO *moscas;
 int qtdDeMoscas;
+int score;
 
 void desenharFundo();
 void desenharLingua();
 void desenharMosca();
+void desenharScore();
 void iniciaPrimeiraFase();
 void desenharPause();
 void desenharESC();

@@ -11,6 +11,7 @@ OBJETO lingua;
 void inicializa()
 {
 	tela = TELA_JOGO_1; //inicia no jogo
+	faseAtual = 0;
 	switch(tela){
 		case TELA_MENU:
 			mundoX = 800;
@@ -38,6 +39,7 @@ void inicializa()
     
     //inicia moscas Fase 1
     qtdDeMoscas = 10;
+
     moscas = malloc(sizeof(OBJETO) * qtdDeMoscas);
     for(int i = 0; i < qtdDeMoscas; i++){
 		moscas[i].posicao.x = rand()%401;
@@ -164,15 +166,13 @@ void atualiza()
 
     switch(tela){
    	case TELA_MENU:
-   		//iniciaMenu(0,0);
-   		//glutSwapBuffers();
+
    		break;
    	case TELA_JOGO_1:
 		for(int i = 0; i < qtdDeMoscas; i++)
 			testeColisaoMosca(pontaLingua,moscas[i]);
-   		//iniciaPrimeiraFase();
+		glutPostRedisplay();
    		break;
-   		//exit(0);
     }
 
     glutPostRedisplay();
