@@ -7,6 +7,7 @@ typedef struct{
     VETOR velocidade;
     double largura;
     double altura;
+    int vaiDesenhar;
 }OBJETO;
 
 

@@ -31,19 +31,28 @@ void desenharMoscas(){
     srand(time(NULL));
     for(int i  = 0; i < 10; i++){
         vel = rand()%100;
-        vel = (double)vel/1000;
         if(rand() % 2 == 0)
             vel *= -1;
+        vel = (double)vel/100;
+        
         moscas[i].velocidade.x+= vel;
         vel = rand()%100;
-        vel = (double)vel/1000;
         if(rand() % 2 == 0)
             vel*= -1;
+        vel = (double)vel/100;
         moscas[i].velocidade.y += vel;
+        moscas[i].posicao.y -= 1;
+        if(moscas[i].posicao.y <= 0 || moscas[i].posicao.x <= 0 || moscas[i].posicao.x >= 400){
+        	moscas[i].posicao.y = 800;
+        	moscas[i].posicao.x = rand()%401;
+        	moscas[i].velocidade.x = 0;
+        	moscas[i].velocidade.y = 0;
+        }
 	}
 	
 	for(int i = 0; i < qtdDeMoscas ; i++)
-		desenhaObjeto(moscas[i],"mosca1.png");
+		if(moscas[i].vaiDesenhar == 1)// corrigir essa parte 
+			desenhaObjeto(moscas[i],"mosca1.png");
 }
 
 void desenharScore(){
@@ -110,7 +119,7 @@ void desenharReinicio(){
 
 }
 
-void testeColisaoMosca(OBJETO ob1, OBJETO ob2){
+int testeColisaoMosca(OBJETO ob1, OBJETO ob2){
 
 	double distancia = sqrt((ob1.posicao.x+ob1.velocidade.x - ob2.posicao.x+ob2.velocidade.x)*(ob1.posicao.x+ob1.velocidade.x - ob2.posicao.x+ob2.velocidade.x) + (ob1.posicao.y+ob1.velocidade.y - ob2.posicao.y+ob2.velocidade.y)*(ob1.posicao.y+ob1.velocidade.y - ob2.posicao.y+ob2.velocidade.y));
 	double raio1 = sqrt(pow((ob1.largura/2),2) + pow((ob1.altura/2),2));
@@ -118,39 +127,9 @@ void testeColisaoMosca(OBJETO ob1, OBJETO ob2){
 
 
 	if(distancia <= (raio1 + raio2) ){
-		printf("pegou\n");
-		ob2.largura = 0;
-		ob2.altura = 0;
+		return 0;
 	}
+	return 1;
 
 }
 
-void movimentarLingua(char unsigned key){
-	switch(key){
-		case 'w':
-			lingua.altura += 4;
-			pontaLingua.velocidade.y += 2;
-			break;
-		case 's':
-			lingua.altura -= 4;
-			pontaLingua.velocidade.y -= 2;
-			break;
-		case 'a':
-			lingua.velocidade.x -= 2;
-			pontaLingua.velocidade.x -= 2;
-			break;
-		case 'd':
-			lingua.velocidade.x += 2;
-			pontaLingua.velocidade.x += 2;
-			break;
-		case 'p':
-			tela = TELA_PAUSE;
-			break;
-		case 'r':
-			tela = TELA_REINICIAR;
-			break;
-		case 27:
-			tela = TELA_ESC;
-			break;
-	}
-}

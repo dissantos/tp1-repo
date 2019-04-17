@@ -8,7 +8,7 @@ OBJETO pontaLingua;
 OBJETO *moscas;
 int qtdDeMoscas;
 int score;
-
+int teclas[255];
 void desenharFundo();
 void desenharLingua();
 void desenharMosca();
@@ -17,7 +17,7 @@ void iniciaPrimeiraFase();
 void desenharPause();
 void desenharESC();
 void desenharReinicio();
-void testeColisaoMosca(OBJETO ob1, OBJETO ob2);
+int testeColisaoMosca(OBJETO ob1, OBJETO ob2);
 void movimentarLingua(unsigned char key);
 
 

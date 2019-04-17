@@ -48,6 +48,7 @@ void inicializa()
 		moscas[i].velocidade.y = 0;
 		moscas[i].largura = 20;
 		moscas[i].altura = 20;
+		moscas[i].vaiDesenhar = 1;
 	}
     
     glClearColor(1, 1, 1, 1);
@@ -97,60 +98,14 @@ void redimensiona(int w, int h)
 
 }
 
-void teclado(unsigned char key, int x, int y)
+void teclaPressionada(unsigned char key, int x, int y)
 {
-    if(tela >= TELA_JOGO_1 && tela <= TELA_JOGO_4)
-        movimentarLingua(key);
-    if(tela == TELA_ESC){
-    	switch(key){
-    		case 's':
-    			exit(0);
-    		case 'n':
-    			tela = TELA_JOGO_1;
-    			break;
-    	}
-    }
-    if(tela == TELA_PAUSE){
-    	switch(key){
-    		case 's' :
-    		tela = TELA_JOGO_1;
-    		break;
-    	}
-    }
-    if(tela == TELA_REINICIAR){
-    	switch(key){
-    		case 's' :
-    			//reinicia todas as variaveis	
-    			score = 0;
-    		    lingua.posicao.x = 200;
-				lingua.posicao.y = 0;
-				lingua.velocidade.x = 0;
-				lingua.velocidade.y = 0;
-				lingua.largura = 50;
-				lingua.altura = 50;
-				pontaLingua.posicao.x = lingua.posicao.x - 3;
-				pontaLingua.posicao.y = lingua.altura - 5;
-				pontaLingua.velocidade.x = 0;
-				pontaLingua.velocidade.y = 0;
-				pontaLingua.altura = 50;
-				pontaLingua.largura = 50;
-				for(int i = 0; i < qtdDeMoscas; i++){
-					moscas[i].posicao.x = rand()%401;
-					moscas[i].posicao.y = rand()%601+150;
-					moscas[i].velocidade.x = 0;
-					moscas[i].velocidade.y = 0;
-					moscas[i].largura = 20;
-					moscas[i].altura = 20;
-				}
-				tela = TELA_JOGO_1;
-				break;
-			case 'n' :
-				tela = TELA_JOGO_1;
-				break;	
-    	}
-    }
+	teclas[key] = 1;
+}
 
-
+void teclaLiberada(unsigned char key, int x, int y){
+	teclas[key] = 0;
+	// se personagem solta a tecla mudar vetor teclas para 0
 }
 
 
@@ -163,16 +118,94 @@ void mouseClicado(int button, int state, int x, int y){
 void atualiza()
 {
 
-
+	//fazer mudancas com as teclas aqui
     switch(tela){
    	case TELA_MENU:
 
    		break;
    	case TELA_JOGO_1:
-		for(int i = 0; i < qtdDeMoscas; i++)
-			testeColisaoMosca(pontaLingua,moscas[i]);
-		glutPostRedisplay();
-   		break;
+		for(int i = 0; i < qtdDeMoscas; i++){
+			if(moscas[i].vaiDesenhar == 1){
+				moscas[i].vaiDesenhar = testeColisaoMosca(pontaLingua,moscas[i]);
+			}
+			if(moscas[i].vaiDesenhar == 0){
+				score += 10;
+				moscas[i].posicao.y = 780;
+				moscas[i].posicao.x = rand()%400;
+				moscas[i].vaiDesenhar = 1;
+			}
+		}
+		//teclado
+		if(teclas['w']){
+			lingua.altura += 0.02;
+			pontaLingua.velocidade.y += 0.01;
+		}
+		
+		if(teclas['s']){
+			lingua.altura -= 0.02;
+			pontaLingua.velocidade.y -= 0.01;
+		}
+		
+		if(teclas['a']){
+			lingua.velocidade.x -= 0.01;
+			pontaLingua.velocidade.x -= 0.01;
+		}
+		
+		if(teclas['d']){
+			lingua.velocidade.x += 0.01;
+			pontaLingua.velocidade.x += 0.01;
+		}
+		if(teclas['p']){
+			tela = TELA_PAUSE;
+		}
+		if(teclas['r']){
+			tela = TELA_REINICIAR;
+		}
+		if(teclas[27]){
+			tela = TELA_ESC;
+		}
+		break;
+	case TELA_PAUSE:
+		if(teclas['s']){
+			tela = TELA_JOGO_1;
+		}
+		break;
+	case TELA_REINICIAR:
+		if(teclas['s']){
+			score = 0;
+    	    lingua.posicao.x = 200;
+			lingua.posicao.y = 0;
+			lingua.velocidade.x = 0;
+			lingua.velocidade.y = 0;
+			lingua.largura = 50;
+			lingua.altura = 50;
+			pontaLingua.posicao.x = lingua.posicao.x - 3;
+			pontaLingua.posicao.y = lingua.altura - 5;
+			pontaLingua.velocidade.x = 0;
+			pontaLingua.velocidade.y = 0;
+			pontaLingua.altura = 50;
+			pontaLingua.largura = 50;
+			for(int i = 0; i < qtdDeMoscas; i++){
+				moscas[i].posicao.x = rand()%401;
+				moscas[i].posicao.y = rand()%601+150;
+				moscas[i].velocidade.x = 0;
+				moscas[i].velocidade.y = 0;
+				moscas[i].largura = 20;
+				moscas[i].altura = 20;
+				moscas[i].vaiDesenhar = 1;
+			}
+			tela = TELA_JOGO_1;
+		}
+		if(teclas['n']){
+			tela = TELA_JOGO_1;
+		}
+		break;
+	case TELA_ESC:
+		if(teclas['s'])
+			exit(0);
+		if(teclas['n'])
+			tela = TELA_JOGO_1;
+		break;
     }
 
     glutPostRedisplay();
@@ -193,7 +226,8 @@ int main(int argc, char** argv)
     glutCreateWindow("Pescaria");
 
     glutReshapeFunc(redimensiona);
-    glutKeyboardFunc(teclado);
+    glutKeyboardFunc(teclaPressionada);
+    glutKeyboardUpFunc(teclaLiberada);
     glutMouseFunc(mouseClicado);
     glutDisplayFunc(desenha);
     glutIdleFunc(atualiza);
