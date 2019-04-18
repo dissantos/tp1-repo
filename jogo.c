@@ -29,19 +29,14 @@ void desenharLingua(){
 void desenharMoscas(){
 	double vel;
     srand(time(NULL));
-    for(int i  = 0; i < 10; i++){
+    for(int i  = 0; i < qtdDeMoscas; i++){
         vel = rand()%100;
         if(rand() % 2 == 0)
             vel *= -1;
         vel = (double)vel/100;
         
         moscas[i].velocidade.x+= vel;
-        vel = rand()%100;
-        if(rand() % 2 == 0)
-            vel*= -1;
-        vel = (double)vel/100;
-        moscas[i].velocidade.y += vel;
-        moscas[i].posicao.y -= 1;
+        moscas[i].posicao.y -= 2;
         if(moscas[i].posicao.y <= 0 || moscas[i].posicao.x <= 0 || moscas[i].posicao.x >= 400){
         	moscas[i].posicao.y = 800;
         	moscas[i].posicao.x = rand()%401;
@@ -50,18 +45,105 @@ void desenharMoscas(){
         }
 	}
 	
-	for(int i = 0; i < qtdDeMoscas ; i++)
-		if(moscas[i].vaiDesenhar == 1)// corrigir essa parte 
+	for(int i = 0; i < qtdDeMoscas ; i++){
+		if(moscas[i].vaiDesenhar == 1){// corrigir essa parte 
 			desenhaObjeto(moscas[i],"mosca1.png");
+		}
+	}
 }
 
-void desenharScore(){
+void desenharDisplay(){
+	OBJETO vidaDisplay;
+	vidaDisplay.posicao.x = 30;
+	vidaDisplay.posicao.y = 775;
+	vidaDisplay.velocidade.x = 0;
+	vidaDisplay.velocidade.y = 0;
+	vidaDisplay.altura = 25;
+	vidaDisplay.largura = 60;
+	
+	glColor3f(0,0,0);
+	glBegin(GL_TRIANGLE_FAN);
+		glVertex3f(0,750,0);
+		glVertex3f(400,750,0);
+		glVertex3f(400,800,0);
+		glVertex3f(0,800,0);	
+	glEnd();
+	
+	switch(vida){
+		case 3:
+			desenhaObjeto(vidaDisplay,"3vidas.png");
+			break;
+		case 2:
+			desenhaObjeto(vidaDisplay,"2vidas.png");
+			break;
+		case 1:
+			desenhaObjeto(vidaDisplay,"1vida.png");
+			break;
+	}
+	
+	
+	
 	glColor3f(1,1,1);
-	escreveTexto(  GLUT_BITMAP_9_BY_15 , "SCORE:" , 300,750,0);
+	escreveTexto(  GLUT_BITMAP_9_BY_15 , "SCORE:" , 300,760,0);
 	char pontuacao[5];
 	sprintf(pontuacao,"%d",score);
 	
-	escreveTexto( GLUT_BITMAP_9_BY_15 , pontuacao, 370,750,0 );
+	escreveTexto( GLUT_BITMAP_9_BY_15 , pontuacao, 370,760,0 );
+}
+
+
+void desenharESC(){
+	OBJETO telaESC;
+	telaESC.posicao.x = 200;
+	telaESC.posicao.y = 400;
+	telaESC.velocidade.x = 0;
+	telaESC.velocidade.y = 0;
+	telaESC.altura = 800;
+	telaESC.largura = 400;
+	
+	desenhaObjeto(telaESC, "telaESC.png");
+}
+
+void desenharPause(){
+	OBJETO telaPause;
+	telaPause.posicao.x = 200;
+	telaPause.posicao.y = 400;
+	telaPause.velocidade.x = 0;
+	telaPause.velocidade.y = 0;
+	telaPause.altura = 800;
+	telaPause.largura = 400;
+	
+	desenhaObjeto(telaPause, "telaPause.png");
+
+}
+
+void desenharReinicio(){
+	OBJETO telaReinicio;
+	telaReinicio.posicao.x = 200;
+	telaReinicio.posicao.y = 400;
+	telaReinicio.velocidade.x = 0;
+	telaReinicio.velocidade.y = 0;
+	telaReinicio.altura = 800;
+	telaReinicio.largura = 400;
+	
+	desenhaObjeto(telaReinicio, "telaReinicio.png");
+
+}
+
+
+void testeColisaoMosca(){
+	double distancia, raio1,raio2;
+	for(int i = 0; i < qtdDeMoscas; i++){
+		if(moscas[i].vaiDesenhar == 1){
+			distancia = sqrt(pow((pontaLingua.posicao.x + pontaLingua.velocidade.x - moscas[i].posicao.x + moscas[i].velocidade.x),2) + 									pow((pontaLingua.posicao.y + pontaLingua.velocidade.y - moscas[i].posicao.y + moscas[i].velocidade.y),2));
+			raio1 = sqrt(pow((pontaLingua.largura/2),2) + pow((pontaLingua.altura/2),2));
+			raio2 = sqrt(pow((moscas[i].largura/2),2) + pow((moscas[i].altura/2),2));
+			if(distancia <= (raio1 + raio2) ){
+				moscas[i].vaiDesenhar = 0;
+				score +=  10;
+			}
+		}
+	}
 }
 
 void iniciaPrimeiraFase(){
@@ -72,64 +154,8 @@ void iniciaPrimeiraFase(){
     desenharFundo();
     desenharLingua();
     desenharMoscas();
-    desenharScore();
+    desenharDisplay();
+    //desenhaQtdDeMoscas();
 }
 
-void desenharESC(){
-	glColor3f(1,1,1);
-	glBegin(GL_TRIANGLE_FAN);
-		glVertex3f(0,0,0);
-		glVertex3f(mundoX,0,0);
-		glVertex3f(mundoX,mundoY,0);
-		glVertex3f(0,mundoY,0);
-	glEnd();
-	
-	glColor3f(1,0,0);
-	escreveTexto( GLUT_BITMAP_TIMES_ROMAN_24, "Se deseja sair do jogo aperte S",50,400,0);
-	escreveTexto( GLUT_BITMAP_TIMES_ROMAN_24, "se nao aperte N",100,350,0);
-}
-
-void desenharPause(){
-	glColor3f(1,1,1);
-	glBegin(GL_TRIANGLE_FAN);
-		glVertex3f(0,0,0);
-		glVertex3f(mundoX,0,0);
-		glVertex3f(mundoX,mundoY,0);
-		glVertex3f(0,mundoY,0);
-	glEnd();
-	
-	glColor3f(0,0,1);
-	escreveTexto( GLUT_BITMAP_TIMES_ROMAN_24, "JOGO PAUSADO",50,400,0);
-	escreveTexto(  GLUT_BITMAP_9_BY_15 , "Aperte 's' para continuar...",50,350,0);
-
-}
-
-void desenharReinicio(){
-	glColor3f(1,1,1);
-	glBegin(GL_TRIANGLE_FAN);
-		glVertex3f(0,0,0);
-		glVertex3f(mundoX,0,0);
-		glVertex3f(mundoX,mundoY,0);
-		glVertex3f(0,mundoY,0);
-	glEnd();
-	
-	glColor3f(0,1,0);
-	escreveTexto(  GLUT_BITMAP_HELVETICA_18 , "VOCE DESEJA REINICIAR O JOGO?",50,400,0);
-	escreveTexto(  GLUT_BITMAP_HELVETICA_12 , "Aperte 's' para reiniciar e 'n' se quiser continuar...",0,350,0);
-
-}
-
-int testeColisaoMosca(OBJETO ob1, OBJETO ob2){
-
-	double distancia = sqrt((ob1.posicao.x+ob1.velocidade.x - ob2.posicao.x+ob2.velocidade.x)*(ob1.posicao.x+ob1.velocidade.x - ob2.posicao.x+ob2.velocidade.x) + (ob1.posicao.y+ob1.velocidade.y - ob2.posicao.y+ob2.velocidade.y)*(ob1.posicao.y+ob1.velocidade.y - ob2.posicao.y+ob2.velocidade.y));
-	double raio1 = sqrt(pow((ob1.largura/2),2) + pow((ob1.altura/2),2));
-	double raio2 = sqrt(pow((ob2.largura/2),2) + pow((ob2.altura/2),2));
-
-
-	if(distancia <= (raio1 + raio2) ){
-		return 0;
-	}
-	return 1;
-
-}
 

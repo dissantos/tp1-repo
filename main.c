@@ -23,6 +23,7 @@ void inicializa()
 	}
     
     score = 0;
+    vida = 3;
     //inicializa lingua
     lingua.posicao.x = 200;
     lingua.posicao.y = 0;
@@ -38,12 +39,12 @@ void inicializa()
     pontaLingua.largura = 50;
     
     //inicia moscas Fase 1
-    qtdDeMoscas = 10;
+    qtdDeMoscas = 20;
 
     moscas = malloc(sizeof(OBJETO) * qtdDeMoscas);
     for(int i = 0; i < qtdDeMoscas; i++){
 		moscas[i].posicao.x = rand()%401;
-		moscas[i].posicao.y = rand()%601+150;
+		moscas[i].posicao.y = rand()%1001+150;
 		moscas[i].velocidade.x = 0;
 		moscas[i].velocidade.y = 0;
 		moscas[i].largura = 20;
@@ -124,36 +125,43 @@ void atualiza()
 
    		break;
    	case TELA_JOGO_1:
-		for(int i = 0; i < qtdDeMoscas; i++){
-			if(moscas[i].vaiDesenhar == 1){
-				moscas[i].vaiDesenhar = testeColisaoMosca(pontaLingua,moscas[i]);
-			}
-			if(moscas[i].vaiDesenhar == 0){
-				score += 10;
-				moscas[i].posicao.y = 780;
-				moscas[i].posicao.x = rand()%400;
-				moscas[i].vaiDesenhar = 1;
-			}
-		}
+		testeColisaoMosca();
+		
 		//teclado
 		if(teclas['w']){
-			lingua.altura += 0.02;
-			pontaLingua.velocidade.y += 0.01;
+			if(pontaLingua.posicao.y + pontaLingua.velocidade.y + pontaLingua.altura/2 <= 800){
+				lingua.altura += 0.02;
+				pontaLingua.velocidade.y += 0.01;
+			}
 		}
 		
 		if(teclas['s']){
-			lingua.altura -= 0.02;
-			pontaLingua.velocidade.y -= 0.01;
+			if(pontaLingua.posicao.y + pontaLingua.velocidade.y - pontaLingua.altura/2 >= 0){
+				lingua.altura -= 0.02;
+				pontaLingua.velocidade.y -= 0.01;
+			}
 		}
 		
 		if(teclas['a']){
 			lingua.velocidade.x -= 0.01;
 			pontaLingua.velocidade.x -= 0.01;
+			if(pontaLingua.posicao.x + pontaLingua.velocidade.x + pontaLingua.largura/2 < 0){
+				pontaLingua.posicao.x = 400;
+				lingua.posicao.x = 400;
+				pontaLingua.velocidade.x = 0;
+				lingua.velocidade.x = 0;
+			}
 		}
 		
 		if(teclas['d']){
 			lingua.velocidade.x += 0.01;
 			pontaLingua.velocidade.x += 0.01;
+			if(pontaLingua.posicao.x + pontaLingua.velocidade.x - pontaLingua.largura/2 > 400){
+				pontaLingua.posicao.x = 0;
+				lingua.posicao.x = 0;
+				pontaLingua.velocidade.x = 0;
+				lingua.velocidade.x = 0;
+			}
 		}
 		if(teclas['p']){
 			tela = TELA_PAUSE;
@@ -173,6 +181,7 @@ void atualiza()
 	case TELA_REINICIAR:
 		if(teclas['s']){
 			score = 0;
+			vida = 3;
     	    lingua.posicao.x = 200;
 			lingua.posicao.y = 0;
 			lingua.velocidade.x = 0;

@@ -9,16 +9,18 @@ OBJETO *moscas;
 int qtdDeMoscas;
 int score;
 int teclas[255];
+int vida;
+
 void desenharFundo();
 void desenharLingua();
 void desenharMosca();
-void desenharScore();
+void desenharDisplay();
 void iniciaPrimeiraFase();
 void desenharPause();
 void desenharESC();
 void desenharReinicio();
-int testeColisaoMosca(OBJETO ob1, OBJETO ob2);
-void movimentarLingua(unsigned char key);
+void testeColisaoMosca();
+
 
 
 
