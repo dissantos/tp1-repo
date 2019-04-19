@@ -37,10 +37,8 @@ void escreveTexto(void * font, char *s, float x, float y, float z)
 void desenhaObjeto(OBJETO objAtual,const char* arquivo){
 
     GLuint idTextura = carregaTextura(arquivo);
-    glEnable(GL_TEXTURE_2D);
     glColor3f(1,1,1);
     glEnable(GL_TEXTURE_2D);
-
     glBindTexture(GL_TEXTURE_2D, idTextura);
 
     glPushMatrix();

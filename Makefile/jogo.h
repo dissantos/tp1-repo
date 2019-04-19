@@ -6,6 +6,7 @@ int score;
 OBJETO lingua;
 OBJETO pontaLingua;
 OBJETO *moscas;
+OBJETO fundoJogo[2];
 int qtdDeMoscas;
 int score;
 int teclas[255];

@@ -6,13 +6,11 @@
 
 
 void desenharFundo(){
-    glColor3f(0,0.8,1);
-    glBegin(GL_TRIANGLE_FAN);
-        glVertex3f(0,0,0);
-        glVertex3f(mundoX,0,0);
-        glVertex3f(mundoX,mundoY,0);
-        glVertex3f(0,mundoY,0);
-    glEnd();
+	desenhaObjeto(fundoJogo[0],"fundoJogo1.png");
+	
+	desenhaObjeto(fundoJogo[1],"fundoJogo1.png");
+	
+
 }
 
 void desenharLingua(){
@@ -30,24 +28,23 @@ void desenharMoscas(){
 	double vel;
     srand(time(NULL));
     for(int i  = 0; i < qtdDeMoscas; i++){
-        vel = rand()%100;
-        if(rand() % 2 == 0)
-            vel *= -1;
-        vel = (double)vel/100;
-        
-        moscas[i].velocidade.x+= vel;
-        moscas[i].posicao.y -= 2;
-        if(moscas[i].posicao.y <= 0 || moscas[i].posicao.x <= 0 || moscas[i].posicao.x >= 400){
-        	moscas[i].posicao.y = 800;
-        	moscas[i].posicao.x = rand()%401;
-        	moscas[i].velocidade.x = 0;
-        	moscas[i].velocidade.y = 0;
-        }
-	}
-	
-	for(int i = 0; i < qtdDeMoscas ; i++){
-		if(moscas[i].vaiDesenhar == 1){// corrigir essa parte 
-			desenhaObjeto(moscas[i],"mosca1.png");
+    	if(moscas[i].vaiDesenhar == 1){	
+		    vel = rand()%100;
+		    if(rand() % 2 == 0)
+		        vel *= -1;
+		    vel = (double)vel/100;
+		    
+		    moscas[i].posicao.x+= vel;
+		    moscas[i].posicao.y -= 2;
+		    if(moscas[i].posicao.y <= 0 || moscas[i].posicao.x + moscas[i].velocidade.x <= 0 || moscas[i].posicao.x + moscas[i].velocidade.x >= 400){
+		    	moscas[i].posicao.y = 800;
+		    	moscas[i].posicao.x = rand()%401;
+		    	//moscas[i].velocidade.x = 0;
+		    	//moscas[i].velocidade.y = 0;
+		    }
+			// corrigir essa parte 
+				desenhaObjeto(moscas[i],"mosca1.png");
+				printf("x: %lf\ny :%lf\n",moscas[i].posicao.x+moscas[i].velocidade.x, moscas[i].posicao.y);
 		}
 	}
 }
@@ -94,24 +91,24 @@ void desenharDisplay(){
 
 void desenharESC(){
 	OBJETO telaESC;
-	telaESC.posicao.x = 200;
-	telaESC.posicao.y = 400;
+	telaESC.posicao.x = mundoX/2;
+	telaESC.posicao.y = mundoY/2;
 	telaESC.velocidade.x = 0;
 	telaESC.velocidade.y = 0;
-	telaESC.altura = 800;
-	telaESC.largura = 400;
+	telaESC.altura = mundoY;
+	telaESC.largura = mundoX;
 	
 	desenhaObjeto(telaESC, "telaESC.png");
 }
 
 void desenharPause(){
 	OBJETO telaPause;
-	telaPause.posicao.x = 200;
-	telaPause.posicao.y = 400;
+	telaPause.posicao.x = mundoX/2;
+	telaPause.posicao.y = mundoY/2;
 	telaPause.velocidade.x = 0;
 	telaPause.velocidade.y = 0;
-	telaPause.altura = 800;
-	telaPause.largura = 400;
+	telaPause.altura = mundoY;
+	telaPause.largura = mundoX;
 	
 	desenhaObjeto(telaPause, "telaPause.png");
 
@@ -119,12 +116,12 @@ void desenharPause(){
 
 void desenharReinicio(){
 	OBJETO telaReinicio;
-	telaReinicio.posicao.x = 200;
-	telaReinicio.posicao.y = 400;
+	telaReinicio.posicao.x = mundoX/2;
+	telaReinicio.posicao.y = mundoY/2;
 	telaReinicio.velocidade.x = 0;
 	telaReinicio.velocidade.y = 0;
-	telaReinicio.altura = 800;
-	telaReinicio.largura = 400;
+	telaReinicio.altura = mundoY;
+	telaReinicio.largura = mundoX;
 	
 	desenhaObjeto(telaReinicio, "telaReinicio.png");
 
@@ -151,7 +148,7 @@ void iniciaPrimeiraFase(){
     mundoY = 800;
     
 
-    desenharFundo();
+    //desenharFundo();
     desenharLingua();
     desenharMoscas();
     desenharDisplay();

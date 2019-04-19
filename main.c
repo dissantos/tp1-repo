@@ -21,6 +21,21 @@ void inicializa()
     		mundoX = 400;
     		mundoY = 800;
 	}
+    //inicializa fundo do jogo
+    fundoJogo[0].posicao.x = mundoX/2;
+	fundoJogo[0].posicao.y = mundoY/2;
+	fundoJogo[0].velocidade.y = 0;
+	fundoJogo[0].velocidade.x = 0;
+	fundoJogo[0].largura = mundoX;
+	fundoJogo[0].altura = mundoY;
+	
+	fundoJogo[1].posicao.x = mundoX/2;
+	fundoJogo[1].posicao.y = mundoY+mundoY/2;
+	fundoJogo[1].velocidade.y = 0;
+	fundoJogo[1].velocidade.x = 0;
+	fundoJogo[1].largura = mundoX;
+	fundoJogo[1].altura = mundoY;
+    
     
     score = 0;
     vida = 3;
@@ -127,22 +142,38 @@ void atualiza()
    	case TELA_JOGO_1:
 		testeColisaoMosca();
 		
+		//movimenta cenario
+		/*
+		fundoJogo[0].posicao.y -= 0.06;
+		if(fundoJogo[0].posicao.y + fundoJogo[0].altura/2 <= 0){
+			fundoJogo[0].posicao.y = mundoY + mundoY/2;
+		}
+		fundoJogo[1].posicao.y -= 0.06;
+		if(fundoJogo[1].posicao.y + fundoJogo[1].altura/2 <= 0){
+			fundoJogo[1].posicao.y = mundoY + mundoY/2;
+		}
+		*/
+		//movimenta moscas
+		for(int i = 0; i < qtdDeMoscas; i++)
+			if(moscas[i].vaiDesenhar == 1)
+				moscas[i].posicao.y -= 0.06;
+		
 		//teclado
-		if(teclas['w']){
+		if(teclas['w']||teclas['W']){
 			if(pontaLingua.posicao.y + pontaLingua.velocidade.y + pontaLingua.altura/2 <= 800){
 				lingua.altura += 0.02;
 				pontaLingua.velocidade.y += 0.01;
 			}
 		}
 		
-		if(teclas['s']){
+		if(teclas['s']||teclas['S']){
 			if(pontaLingua.posicao.y + pontaLingua.velocidade.y - pontaLingua.altura/2 >= 0){
 				lingua.altura -= 0.02;
 				pontaLingua.velocidade.y -= 0.01;
 			}
 		}
 		
-		if(teclas['a']){
+		if(teclas['a']||teclas['A']){
 			lingua.velocidade.x -= 0.01;
 			pontaLingua.velocidade.x -= 0.01;
 			if(pontaLingua.posicao.x + pontaLingua.velocidade.x + pontaLingua.largura/2 < 0){
@@ -153,7 +184,7 @@ void atualiza()
 			}
 		}
 		
-		if(teclas['d']){
+		if(teclas['d']||teclas['D']){
 			lingua.velocidade.x += 0.01;
 			pontaLingua.velocidade.x += 0.01;
 			if(pontaLingua.posicao.x + pontaLingua.velocidade.x - pontaLingua.largura/2 > 400){
@@ -163,7 +194,7 @@ void atualiza()
 				lingua.velocidade.x = 0;
 			}
 		}
-		if(teclas['p']){
+		if(teclas['p']||teclas['P']){
 			tela = TELA_PAUSE;
 		}
 		if(teclas['r']){
@@ -174,12 +205,12 @@ void atualiza()
 		}
 		break;
 	case TELA_PAUSE:
-		if(teclas['s']){
+		if(teclas['s']||teclas['S']){
 			tela = TELA_JOGO_1;
 		}
 		break;
 	case TELA_REINICIAR:
-		if(teclas['s']){
+		if(teclas['s']||teclas['S']){
 			score = 0;
 			vida = 3;
     	    lingua.posicao.x = 200;
@@ -205,14 +236,14 @@ void atualiza()
 			}
 			tela = TELA_JOGO_1;
 		}
-		if(teclas['n']){
+		if(teclas['n']||teclas['N']){
 			tela = TELA_JOGO_1;
 		}
 		break;
 	case TELA_ESC:
-		if(teclas['s'])
+		if(teclas['s']||teclas['S'])
 			exit(0);
-		if(teclas['n'])
+		if(teclas['n']||teclas['N'])
 			tela = TELA_JOGO_1;
 		break;
     }
@@ -222,17 +253,25 @@ void atualiza()
 
 
 
-    glutTimerFunc(25, atualiza, 0);
+    glutTimerFunc(33, atualiza, 0);
 }
 
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    
+
+    
+    glutInitContextVersion(1, 1);
+    glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
+    
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(400, 800);
     glutInitWindowPosition(100, 100);
 
     glutCreateWindow("Pescaria");
+
+    inicializa();
 
     glutReshapeFunc(redimensiona);
     glutKeyboardFunc(teclaPressionada);
@@ -241,7 +280,7 @@ int main(int argc, char** argv)
     glutDisplayFunc(desenha);
     glutIdleFunc(atualiza);
 
-    inicializa();
+
 
     glutTimerFunc(0, atualiza, 0);
 
