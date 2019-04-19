@@ -35,8 +35,8 @@ void desenharMoscas(){
 		    vel = (double)vel/100;
 		    
 		    moscas[i].posicao.x+= vel;
-		    moscas[i].posicao.y -= 2;
-		    if(moscas[i].posicao.y <= 0 || moscas[i].posicao.x + moscas[i].velocidade.x <= 0 || moscas[i].posicao.x + moscas[i].velocidade.x >= 400){
+		    //moscas[i].posicao.y -= 2;
+		    if(moscas[i].posicao.y + moscas[i].velocidade.y<= 0 || moscas[i].posicao.x + moscas[i].velocidade.x <= 0 || moscas[i].posicao.x + moscas[i].velocidade.x >= 400){
 		    	moscas[i].posicao.y = 800;
 		    	moscas[i].posicao.x = rand()%401;
 		    	//moscas[i].velocidade.x = 0;
@@ -135,6 +135,7 @@ void testeColisaoMosca(){
 			distancia = sqrt(pow((pontaLingua.posicao.x + pontaLingua.velocidade.x - moscas[i].posicao.x + moscas[i].velocidade.x),2) + 									pow((pontaLingua.posicao.y + pontaLingua.velocidade.y - moscas[i].posicao.y + moscas[i].velocidade.y),2));
 			raio1 = sqrt(pow((pontaLingua.largura/2),2) + pow((pontaLingua.altura/2),2));
 			raio2 = sqrt(pow((moscas[i].largura/2),2) + pow((moscas[i].altura/2),2));
+			printf("distancia: %lf\n",distancia);
 			if(distancia <= (raio1 + raio2) ){
 				moscas[i].vaiDesenhar = 0;
 				score +=  10;

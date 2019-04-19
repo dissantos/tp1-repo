@@ -11,6 +11,7 @@ int qtdDeMoscas;
 int score;
 int teclas[255];
 int vida;
+double velocidadeJogo;
 
 void desenharFundo();
 void desenharLingua();

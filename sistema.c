@@ -42,7 +42,7 @@ void desenhaObjeto(OBJETO objAtual,const char* arquivo){
     glBindTexture(GL_TEXTURE_2D, idTextura);
 
     glPushMatrix();
-        glTranslatef(objAtual.posicao.x+objAtual.velocidade.x, objAtual.posicao.y + objAtual.velocidade.y, 0);
+        glTranslatef(objAtual.posicao.x, objAtual.posicao.y, 0);
         glBegin(GL_TRIANGLE_FAN);
 	    glTexCoord2f(0,0);
             glVertex3f(-objAtual.largura/2, -objAtual.altura/2,0);
