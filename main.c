@@ -4,20 +4,23 @@
 #include "menu.h"
 #include "jogo.h"
 #include <time.h>
+#include <string.h>
 
 OBJETO lingua;
 
 
 void inicializa()
 {
-	tela = TELA_JOGO_1; //inicia no jogo
+	tela = TELA_JOGO; //inicia no jogo
 	faseAtual = 0;
+	indiceDoSpriteMosca = 0;
+	indiceDoSpriteAbelha = 0;
 	switch(tela){
 		case TELA_MENU:
 			mundoX = 800;
     		mundoY = 800;
     		break;
-    	case TELA_JOGO_1:
+    	case TELA_JOGO:
     		mundoX = 400;
     		mundoY = 800;
 	}
@@ -25,50 +28,9 @@ void inicializa()
     
     score = 0;
     vida = 3;
-    //inicializa lingua
-    lingua.posicao.x = 200;
-    lingua.posicao.y = 0;
-    lingua.velocidade.x = 0.01;
-    lingua.velocidade.y = 0.01;
-    lingua.largura = 50;
-    lingua.altura = 50;
-    pontaLingua.posicao.x = lingua.posicao.x - 3;
-    pontaLingua.posicao.y = lingua.altura - 5;
-    pontaLingua.velocidade.x = 0.01;
-    pontaLingua.velocidade.y = 0.01;
-    pontaLingua.altura = 50;
-    pontaLingua.largura = 50;
-    
-    //inicia moscas Fase 1
-    qtdDeMoscas = 20;
-    velocidadeJogo = 0.06;
-
-//inicializa fundo do jogo
-    fundoJogo[0].posicao.x = mundoX/2;
-	fundoJogo[0].posicao.y = mundoY/2;
-	fundoJogo[0].velocidade.y = velocidadeJogo;
-	fundoJogo[0].velocidade.x = 0;
-	fundoJogo[0].largura = mundoX;
-	fundoJogo[0].altura = mundoY;
-	
-	fundoJogo[1].posicao.x = mundoX/2;
-	fundoJogo[1].posicao.y = mundoY+mundoY/2;
-	fundoJogo[1].velocidade.y = velocidadeJogo;
-	fundoJogo[1].velocidade.x = 0;
-	fundoJogo[1].largura = mundoX;
-	fundoJogo[1].altura = mundoY;
-    
-
-    moscas = malloc(sizeof(OBJETO) * qtdDeMoscas);
-    for(int i = 0; i < qtdDeMoscas; i++){
-		moscas[i].posicao.x = rand()%401;
-		moscas[i].posicao.y = rand()%1001+150;
-		moscas[i].velocidade.x = 0;
-		moscas[i].velocidade.y = velocidadeJogo;
-		moscas[i].largura = 20;
-		moscas[i].altura = 20;
-		moscas[i].vaiDesenhar = 1;
-	}
+	qtdDeMoscas = 10;
+    qtdDeAbelhas = 2;
+    iniciarPosicoes();
     
     glClearColor(1, 1, 1, 1);
     // habilita mesclagem de cores, para termos suporte a texturas (semi-)transparentes
@@ -88,8 +50,14 @@ void desenha(void)
     	case TELA_MENU:
     		iniciaMenu(0,0);
     		break;
-    	case TELA_JOGO_1:
-    		iniciaPrimeiraFase();
+    	case TELA_JOGO:
+    		iniciaJogo();
+    		break;
+    	case TELA_PROXIMAFASE:
+    		desenharProximaFase();
+    		break;
+    	case TELA_VITORIA:
+    		desenharVitoria();
     		break;
     	case TELA_PAUSE:
     		desenharPause();
@@ -136,17 +104,15 @@ void mouseClicado(int button, int state, int x, int y){
 
 void atualiza()
 {
-
 	//fazer mudancas com as teclas aqui
     switch(tela){
    	case TELA_MENU:
 
    		break;
-   	case TELA_JOGO_1:
+   	case TELA_JOGO:
 		testeColisaoMosca();
 		
 		//movimenta cenario
-		
 		fundoJogo[0].posicao.y -= velocidadeJogo;
 		if(fundoJogo[0].posicao.y + fundoJogo[0].altura/2 <= 0){
 			fundoJogo[0].posicao.y = mundoY + mundoY/2;
@@ -157,8 +123,12 @@ void atualiza()
 		}
 		//movimenta moscas
 		for(int i = 0; i < qtdDeMoscas; i++)
-			if(moscas[i].vaiDesenhar == 1)
+			//if(moscas[i].vaiDesenhar == 1)
 				moscas[i].posicao.y -= moscas[i].velocidade.y;
+				
+		//movimenta abelhas
+		for(int i = 0; i < qtdDeAbelhas; i++)
+			abelhas[i].posicao.y -= abelhas[i].velocidade.y;
 		
 		//teclado
 		if(teclas['w']||teclas['W']){
@@ -203,48 +173,53 @@ void atualiza()
 		if(teclas[27]){
 			tela = TELA_ESC;
 		}
+		
+		//teste para ver se pode passar para a proxima faseAtual
+		for(int i = 0,cont = 0; i < qtdDeMoscas; i++){
+			if(moscas[i].vaiDesenhar == 0)
+				cont++;
+			if(cont == qtdDeMoscas){
+				tela = TELA_PROXIMAFASE;
+				faseAtual++;
+				if(faseAtual == 3)
+					tela = TELA_VITORIA;
+				iniciaProximaFase();
+			}
+		}
+		//atualizar indice do sprite da moscas
+		indiceDoSpriteMosca++;
+		indiceDoSpriteAbelha++;
+		if(indiceDoSpriteMosca == 23)
+			indiceDoSpriteMosca = 0;
+		if(indiceDoSpriteAbelha == 6)
+			indiceDoSpriteAbelha = 0;
+		
 		break;
+	case TELA_PROXIMAFASE:
+		if(teclas['s']||teclas['S'])
+			tela = TELA_JOGO;
+		break;
+	case TELA_VITORIA:
+		if(teclas['s']||teclas['S'])
+			exit(0);
 	case TELA_PAUSE:
 		if(teclas['s']||teclas['S']){
-			tela = TELA_JOGO_1;
+			tela = TELA_JOGO;
 		}
 		break;
 	case TELA_REINICIAR:
 		if(teclas['s']||teclas['S']){
-			score = 0;
-			vida = 3;
-    	    lingua.posicao.x = 200;
-			lingua.posicao.y = 0;
-			lingua.velocidade.x = 0;
-			lingua.velocidade.y = 0;
-			lingua.largura = 50;
-			lingua.altura = 50;
-			pontaLingua.posicao.x = lingua.posicao.x - 3;
-			pontaLingua.posicao.y = lingua.altura - 5;
-			pontaLingua.velocidade.x = 0;
-			pontaLingua.velocidade.y = 0;
-			pontaLingua.altura = 50;
-			pontaLingua.largura = 50;
-			for(int i = 0; i < qtdDeMoscas; i++){
-				moscas[i].posicao.x = rand()%401;
-				moscas[i].posicao.y = rand()%601+150;
-				moscas[i].velocidade.x = 0;
-				moscas[i].velocidade.y = 0;
-				moscas[i].largura = 20;
-				moscas[i].altura = 20;
-				moscas[i].vaiDesenhar = 1;
-			}
-			tela = TELA_JOGO_1;
+			inicializa();
 		}
 		if(teclas['n']||teclas['N']){
-			tela = TELA_JOGO_1;
+			tela = TELA_JOGO;
 		}
 		break;
 	case TELA_ESC:
 		if(teclas['s']||teclas['S'])
 			exit(0);
 		if(teclas['n']||teclas['N'])
-			tela = TELA_JOGO_1;
+			tela = TELA_JOGO;
 		break;
     }
 

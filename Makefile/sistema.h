@@ -14,5 +14,6 @@ void escreveTexto(void * font, char *s, float x, float y, float z);
 
 void desenhaObjeto(OBJETO objAtual,const char* arquivo);
 
+char *gerarNomeTextura(char *nome, int indice);
 
 #endif // SISTEMA_H_INCLUDED

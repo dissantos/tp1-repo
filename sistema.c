@@ -56,6 +56,6 @@ void desenhaObjeto(OBJETO objAtual,const char* arquivo){
     glPopMatrix();
     glEnd();
     glDisable(GL_TEXTURE_2D);
-
-
 }
+
+
