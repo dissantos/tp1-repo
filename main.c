@@ -110,6 +110,7 @@ void atualiza()
 		if(fundoJogo[1].posicao.y + fundoJogo[1].altura/2 <= 0){
 			fundoJogo[1].posicao.y = mundoY + mundoY/2;
 		}
+		printf("%lf\n",fundoJogo[0].posicao.y);
 		//movimenta moscas
 		for(int i = 0; i < qtdDeMoscas; i++)
 			//if(moscas[i].vaiDesenhar == 1)
@@ -231,7 +232,7 @@ void atualiza()
 
 
 
-    glutTimerFunc(17, atualiza, 0);
+    glutTimerFunc(33, atualiza, 0);
 }
 
 int main(int argc, char** argv)
@@ -256,7 +257,7 @@ int main(int argc, char** argv)
     glutKeyboardUpFunc(teclaLiberada);
     glutMouseFunc(mouseClicado);
     glutDisplayFunc(desenha);
-    glutIdleFunc(atualiza);
+    //glutIdleFunc(atualiza);
 
 
 

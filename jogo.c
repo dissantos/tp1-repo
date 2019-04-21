@@ -9,18 +9,18 @@ void iniciarPosicoes(){
 //inicializa lingua
     lingua.posicao.x = 200;
     lingua.posicao.y = 0;
-    lingua.velocidade.x = 0.02;
-    lingua.velocidade.y = 0.02;
+    lingua.velocidade.x = 4;
+    lingua.velocidade.y = 4;
     lingua.largura = 50;
     lingua.altura = 50;
     pontaLingua.posicao.x = lingua.posicao.x - 3;
     pontaLingua.posicao.y = lingua.altura - 5;
-    pontaLingua.velocidade.x = 0.02;
-    pontaLingua.velocidade.y = 0.02;
+    pontaLingua.velocidade.x = 4;
+    pontaLingua.velocidade.y = 4;
     pontaLingua.altura = 50;
     pontaLingua.largura = 50;
     
-    velocidadeJogo = 0.06;
+    velocidadeJogo = 3;
 
 //inicializa fundo do jogo
     fundoJogo[0].posicao.x = mundoX/2;
