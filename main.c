@@ -15,6 +15,7 @@ void inicializa()
 	faseAtual = 0;
 	indiceDoSpriteMosca = 0;
 	indiceDoSpriteAbelha = 0;
+	indiceDoSpriteFada = 0;
 	switch(tela){
 		case TELA_MENU:
 			mundoX = 800;
@@ -53,20 +54,8 @@ void desenha(void)
     	case TELA_JOGO:
     		iniciaJogo();
     		break;
-    	case TELA_PROXIMAFASE:
-    		desenharProximaFase();
-    		break;
-    	case TELA_VITORIA:
-    		desenharVitoria();
-    		break;
-    	case TELA_PAUSE:
-    		desenharPause();
-    		break;
-    	case TELA_ESC:
-    		desenharESC();
-    		break;
-    	case TELA_REINICIAR:
-    		desenharReinicio();
+    	default:
+    		desenharTelaExtra();
     		break;
     	
     }
@@ -129,6 +118,9 @@ void atualiza()
 		//movimenta abelhas
 		for(int i = 0; i < qtdDeAbelhas; i++)
 			abelhas[i].posicao.y -= abelhas[i].velocidade.y;
+			
+		//movimenta fada
+		fada.posicao.y -= fada.velocidade.y;
 		
 		//teclado
 		if(teclas['w']||teclas['W']){
@@ -189,10 +181,17 @@ void atualiza()
 		//atualizar indice do sprite da moscas
 		indiceDoSpriteMosca++;
 		indiceDoSpriteAbelha++;
+		indiceDoSpriteFada++;
 		if(indiceDoSpriteMosca == 23)
 			indiceDoSpriteMosca = 0;
 		if(indiceDoSpriteAbelha == 6)
 			indiceDoSpriteAbelha = 0;
+		if(indiceDoSpriteFada == 3)
+			indiceDoSpriteFada = 0;
+			
+		//indica tela de game over se o jogador perder todas as vidas
+		if(vida <= 0)
+			tela = TELA_DERROTA;
 		
 		break;
 	case TELA_PROXIMAFASE:
@@ -202,6 +201,10 @@ void atualiza()
 	case TELA_VITORIA:
 		if(teclas['s']||teclas['S'])
 			exit(0);
+	case TELA_DERROTA:
+		if(teclas[27])
+			exit(0);
+		break;
 	case TELA_PAUSE:
 		if(teclas['s']||teclas['S']){
 			tela = TELA_JOGO;

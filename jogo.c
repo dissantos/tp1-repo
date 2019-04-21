@@ -60,6 +60,14 @@ void iniciarPosicoes(){
 		abelhas[i].altura = 20;
 		abelhas[i].vaiDesenhar = 1;
     }
+    
+    //inicia fada
+    fada.posicao.y = rand()%1000+700;
+    fada.velocidade.x = 0;
+    fada.velocidade.y = velocidadeJogo;
+    fada.largura = 20;
+    fada.altura = 15;
+    fada.vaiDesenhar = 1;
 }
 
 void desenharFundo(){
@@ -112,18 +120,18 @@ void desenharMoscas(){
 }
 
 void desenharAbelha(){
-	double vel;
+	double velocidade;
 	char spriteAbelhas[][6] = {"1.png","2.png","3.png","4.png","5.png","6.png"};
 
     srand(time(NULL));
     for(int i  = 0; i < qtdDeAbelhas; i++){
     	if(abelhas[i].vaiDesenhar == 1){	
-		    vel = rand()%100;
+		    velocidade = rand()%100;
 		    if(rand() % 2 == 0)
-		        vel *= -1;
-		    vel = (double)vel/100;
+		        velocidade *= -1;
+		    velocidade = (double)velocidade/100;
 		    
-		    abelhas[i].posicao.x+= vel;
+		    abelhas[i].posicao.x+= velocidade;
 
 		    if(abelhas[i].posicao.y + abelhas[i].velocidade.y<= 0 || abelhas[i].posicao.x + abelhas[i].velocidade.x <= 0 || abelhas[i].posicao.x + abelhas[i].velocidade.x >= 400){
 		    	abelhas[i].posicao.y = 800;
@@ -133,6 +141,24 @@ void desenharAbelha(){
 				desenhaObjeto(abelhas[i],spriteAbelhas[indiceDoSpriteAbelha]);
 
 		}
+	}
+}
+
+void desenharFada(){
+	double velocidade;
+	char spriteFada[][20] = {"fada(1).png","fada(2).png","fada(3).png"};
+	srand(time(NULL));
+	if(fada.vaiDesenhar){
+		velocidade = rand()%100;
+		if(rand()%2 == 0)
+			velocidade *= -1;
+		velocidade = (double)velocidade/100;
+		fada.posicao.x += velocidade;
+		if(fada.posicao.y + fada.velocidade.y<= 0 || fada.posicao.x + fada.velocidade.x <= 0 || fada.posicao.x + fada.velocidade.x >= 400){
+			fada.posicao.y = rand()%500 + 800;
+			fada.posicao.x = rand()%401;
+		}
+		desenhaObjeto(fada,spriteFada[indiceDoSpriteFada]);
 	}
 }
 
@@ -177,41 +203,41 @@ void desenharDisplay(){
 }
 
 
-void desenharESC(){
-	OBJETO telaESC;
-	telaESC.posicao.x = mundoX/2;
-	telaESC.posicao.y = mundoY/2;
-	telaESC.velocidade.x = 0;
-	telaESC.velocidade.y = 0;
-	telaESC.altura = mundoY;
-	telaESC.largura = mundoX;
+void desenharTelaExtra(){
+	OBJETO telaAtual;
+	telaAtual.posicao.x = mundoX/2;
+	telaAtual.posicao.y = mundoY/2;
+	telaAtual.velocidade.x = 0;
+	telaAtual.velocidade.y = 0;
+	telaAtual.altura = mundoY;
+	telaAtual.largura = mundoX;
 	
-	desenhaObjeto(telaESC, "telaESC.png");
-}
-
-void desenharPause(){
-	OBJETO telaPause;
-	telaPause.posicao.x = mundoX/2;
-	telaPause.posicao.y = mundoY/2;
-	telaPause.velocidade.x = 0;
-	telaPause.velocidade.y = 0;
-	telaPause.altura = mundoY;
-	telaPause.largura = mundoX;
+	switch(tela){
+		case TELA_PROXIMAFASE:
+			desenhaObjeto(telaAtual, "telaProximaFase.png");
+    		break;
+    	case TELA_VITORIA:
+			desenhaObjeto(telaAtual, "telaVitoria.png");
+    		break;
+    	case TELA_DERROTA:
+			desenhaObjeto(telaAtual, "telaFimDeJogo.png");
+    		break;
+    	case TELA_PAUSE:
+			desenhaObjeto(telaAtual, "telaPause.png");
+    		break;
+    	case TELA_ESC:
+			desenhaObjeto(telaAtual, "telaESC.png");
+    		break;
+    	case TELA_REINICIAR:
+			desenhaObjeto(telaAtual, "telaReinicio.png");
+    		break;
+	}
 	
-	desenhaObjeto(telaPause, "telaPause.png");
-
-}
-
-void desenharReinicio(){
-	OBJETO telaReinicio;
-	telaReinicio.posicao.x = mundoX/2;
-	telaReinicio.posicao.y = mundoY/2;
-	telaReinicio.velocidade.x = 0;
-	telaReinicio.velocidade.y = 0;
-	telaReinicio.altura = mundoY;
-	telaReinicio.largura = mundoX;
+	escreveTexto(   GLUT_BITMAP_HELVETICA_18  , "SCORE:" , 150,200,0);
+	char pontuacao[5];
+	sprintf(pontuacao,"%d",score);
 	
-	desenhaObjeto(telaReinicio, "telaReinicio.png");
+	escreveTexto(  GLUT_BITMAP_HELVETICA_18  , pontuacao, 250,200,0 );
 
 }
 
@@ -241,31 +267,20 @@ void testeColisaoMosca(){
 			}
 		}
 	}
+	
+	if(fada.vaiDesenhar == 1){
+			distancia = sqrt(pow((pontaLingua.posicao.x + pontaLingua.velocidade.x - fada.posicao.x + fada.velocidade.x),2) + 									pow((pontaLingua.posicao.y + pontaLingua.velocidade.y - fada.posicao.y + fada.velocidade.y),2));
+			raio1 = sqrt(pow((pontaLingua.largura/2),2) + pow((pontaLingua.altura/2),2));
+			raio2 = sqrt(pow((fada.largura/2),2) + pow((fada.altura/2),2));
+			if(distancia <= (raio1 + raio2) ){
+				fada.vaiDesenhar = 0;
+				vida = 3;
+				score +=  50;
+			}
+	}
 }
 
-void desenharProximaFase(){
-	OBJETO telaProximaFase;
-	telaProximaFase.posicao.x = mundoX/2;
-	telaProximaFase.posicao.y = mundoY/2;
-	telaProximaFase.velocidade.x = 0;
-	telaProximaFase.velocidade.y = 0;
-	telaProximaFase.altura = mundoY;
-	telaProximaFase.largura = mundoX;
-	
-	desenhaObjeto(telaProximaFase, "telaProximaFase.png");
-}
 
-void desenharVitoria(){
-	OBJETO telaVitoria;
-	telaVitoria.posicao.x = mundoX/2;
-	telaVitoria.posicao.y = mundoY/2;
-	telaVitoria.velocidade.x = 0;
-	telaVitoria.velocidade.y = 0;
-	telaVitoria.altura = mundoY;
-	telaVitoria.largura = mundoX;
-	
-	desenhaObjeto(telaVitoria, "telaVitoria.png");
-}
 
 void iniciaProximaFase(){
 	switch(faseAtual){
@@ -301,6 +316,7 @@ void iniciaJogo(){
     desenharLingua();
     desenharMoscas();
     desenharAbelha();
+    desenharFada();
     desenharDisplay();
     //desenhaQtdDeMoscas();
 }

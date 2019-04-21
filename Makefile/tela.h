@@ -5,6 +5,7 @@
 #define TELA_JOGO 1 //fases do jogo
 #define TELA_PROXIMAFASE 2
 #define TELA_VITORIA 3
+#define TELA_DERROTA 9
 
 #define TELA_SCORE 4
 #define TELA_AJUDA 5
