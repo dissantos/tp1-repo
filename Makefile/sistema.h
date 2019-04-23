@@ -12,8 +12,12 @@ GLuint carregaTextura(const char* arquivo);
 
 void escreveTexto(void * font, char *s, float x, float y, float z);
 
-void desenhaObjeto(OBJETO objAtual,const char* arquivo);
+void desenhaObjeto(OBJETO objAtual,GLuint idTextura);
 
 char *gerarNomeTextura(char *nome, int indice);
+
+void iniciarMusica(char const nome[40], int loop);
+
+void pararMusica();
 
 #endif // SISTEMA_H_INCLUDED

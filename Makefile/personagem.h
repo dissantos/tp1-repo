@@ -11,5 +11,4 @@ typedef struct{
 }OBJETO;
 
 
-
 #endif // PERSONAGEM_H_INCLUDED

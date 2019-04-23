@@ -1,5 +1,5 @@
 CC=gcc
-OPCOES_COMPILADOR=-I. -I/usr/include/SOIL -lSOIL -lglut -lGLU -lGLEW -lGL -lm
+OPCOES_COMPILADOR=-I. -I/usr/include/SOIL -lSOIL -lglut -lGLU -lGLEW -lGL -lSDL -lSDL_mixer -lm
 TODOS_ARQUIVOS_PONTOH = tela.h menu.h personagem.h vetor.h jogo.h
 TODOS_ARQUIVOS_OBJ = main.o sistema.o menu.o jogo.o
 
