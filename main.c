@@ -328,7 +328,7 @@ void atualiza(){
 					asteroide.posicao.x = rand()%401;
 				}
 				if(asteroide2.posicao.y + asteroide2.altura/2 <= 0){
-					asteroide2.posicao.y = mundoY;
+					asteroide2.posicao.y = mundoY+rand()%300;
 					asteroide2.posicao.x = rand()%401;
 				}
 		}
