@@ -92,7 +92,7 @@ void iniciarPosicoes(){
 			asteroide.altura = 160;
 			asteroide.largura = 160;
 			
-			asteroide2.posicao.y = mundoY;
+			asteroide2.posicao.y = mundoY+rand()%400;
 			asteroide2.posicao.x = rand()%401;
 			asteroide2.altura = 160;
 			asteroide2.largura = 160;

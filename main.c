@@ -434,7 +434,7 @@ void atualiza(){
 		}
 		break;
 	case TELA_VITORIA:
-		if(teclas['s']||teclas['S']){
+		if(teclas[27]){
 			tela = TELA_MENU;
 			pararMusica();
 			iniciarMusica("Eu to tranquilão - Mc Sapão.ogg",-1);
